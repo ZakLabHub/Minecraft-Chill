@@ -21,15 +21,15 @@
         }
 
         :root {
-            --bg-color: #000000;
-            --text-color: #8B5CF6;
-            --footer-bg: #000000;
-        }
-
-        body.light-mode {
             --bg-color: #ffffff;
             --text-color: #8B5CF6;
             --footer-bg: #ffffff;
+        }
+
+        body.dark-mode {
+            --bg-color: #000000;
+            --text-color: #8B5CF6;
+            --footer-bg: #000000;
         }
 
         body {
@@ -130,7 +130,6 @@
             width: 100%;
             height: auto;
             display: block;
-            object-fit: cover;
         }
 
         .image-overlay {
@@ -478,9 +477,9 @@
             const body = document.body;
             const themeIcon = document.getElementById('theme-icon');
             
-            body.classList.toggle('light-mode');
+            body.classList.toggle('dark-mode');
             
-            if (body.classList.contains('light-mode')) {
+            if (body.classList.contains('dark-mode')) {
                 themeIcon.className = 'fas fa-sun';
             } else {
                 themeIcon.className = 'fas fa-moon';
