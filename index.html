@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Minecraft & Chill</title>
+    <link rel="icon" type="image/x-icon" href="z.ico">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;700&display=swap" rel="stylesheet">
     <style>
         @font-face {
             font-family: 'SK Cuber';
@@ -204,6 +206,105 @@
         .twitch:hover { color: #9146FF; }
         .pinterest:hover { color: #E60023; }
 
+        /* Notification de confirmation */
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #22C55E;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-family: 'League Spartan', Arial, sans-serif;
+            font-weight: bold;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 9999;
+            opacity: 0;
+            transform: translateX(-50%) translateY(20px);
+            transition: all 0.3s ease;
+        }
+
+        .notification.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* Modal de partage */
+        .share-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .share-modal-content {
+            background: var(--bg-color);
+            border: 2px solid var(--text-color);
+            border-radius: 12px;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+        }
+
+        .share-modal h3 {
+            color: var(--text-color);
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+
+        .share-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .share-btn {
+            background: var(--text-color);
+            color: var(--bg-color);
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .share-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(139, 92, 246, 0.3);
+        }
+
+        .close-modal {
+            background: transparent;
+            border: 1px solid var(--text-color);
+            color: var(--text-color);
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .close-modal:hover {
+            background: var(--text-color);
+            color: var(--bg-color);
+        }
+
         /* Styles pour les différentes tailles d'images */
         .portfolio-item:nth-child(3n+1) img {
             min-height: 500px;
@@ -248,6 +349,39 @@
         <i class="fab fa-pinterest social-icon pinterest" onclick="window.open('https://pinterest.com/Minecraft&Chill', '_blank')"></i>
     </footer>
 
+    <!-- Modal de partage -->
+    <div class="share-modal" id="shareModal">
+        <div class="share-modal-content">
+            <h3>Partager cette image</h3>
+            <div class="share-options">
+                <button class="share-btn" onclick="shareToFacebook()">
+                    <i class="fab fa-facebook-f"></i>
+                    Facebook
+                </button>
+                <button class="share-btn" onclick="shareToTwitter()">
+                    <i class="fab fa-twitter"></i>
+                    Twitter
+                </button>
+                <button class="share-btn" onclick="shareToWhatsApp()">
+                    <i class="fab fa-whatsapp"></i>
+                    WhatsApp
+                </button>
+                <button class="share-btn" onclick="shareToTelegram()">
+                    <i class="fab fa-telegram"></i>
+                    Telegram
+                </button>
+                <button class="share-btn" onclick="copyShareLink()">
+                    <i class="fas fa-link"></i>
+                    Copier lien
+                </button>
+            </div>
+            <button class="close-modal" onclick="closeShareModal()">Fermer</button>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div class="notification" id="notification"></div>
+
     <script>
         // Générer les images du portfolio
         function generatePortfolio() {
@@ -266,6 +400,9 @@
                             </button>
                             <button class="action-btn" onclick="downloadImage('article${i}.png')" title="Télécharger">
                                 <i class="fas fa-download"></i>
+                            </button>
+                            <button class="action-btn" onclick="shareImage('article${i}.png')" title="Partager">
+                                <i class="fas fa-share-alt"></i>
                             </button>
                         </div>
                         <div class="image-date">__/__/__</div>
@@ -293,9 +430,9 @@
         // Fonction pour copier l'image
         function copyImage(imageName) {
             navigator.clipboard.writeText(window.location.origin + '/' + imageName).then(() => {
-                console.log('Lien de l\'image copié !');
-                // Vous pouvez ajouter une notification toast ici
+                showNotification('✓ Lien copié !');
             }).catch(err => {
+                showNotification('✗ Erreur lors de la copie');
                 console.error('Erreur lors de la copie :', err);
             });
         }
@@ -308,7 +445,79 @@
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
+            showNotification('✓ Téléchargement lancé !');
         }
+
+        // Variables globales pour le partage
+        let currentShareImage = '';
+
+        // Fonction pour partager l'image
+        function shareImage(imageName) {
+            currentShareImage = imageName;
+            document.getElementById('shareModal').style.display = 'flex';
+        }
+
+        // Fermer le modal de partage
+        function closeShareModal() {
+            document.getElementById('shareModal').style.display = 'none';
+        }
+
+        // Fonctions de partage
+        function shareToFacebook() {
+            const url = encodeURIComponent(window.location.origin + '/' + currentShareImage);
+            window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, '_blank');
+            showNotification('✓ Partagé sur Facebook !');
+            closeShareModal();
+        }
+
+        function shareToTwitter() {
+            const url = encodeURIComponent(window.location.origin + '/' + currentShareImage);
+            const text = encodeURIComponent('Découvrez cette image Minecraft & Chill !');
+            window.open(`https://twitter.com/intent/tweet?url=${url}&text=${text}`, '_blank');
+            showNotification('✓ Partagé sur Twitter !');
+            closeShareModal();
+        }
+
+        function shareToWhatsApp() {
+            const url = encodeURIComponent(window.location.origin + '/' + currentShareImage);
+            const text = encodeURIComponent(`Découvrez cette image Minecraft & Chill ! ${window.location.origin}/${currentShareImage}`);
+            window.open(`https://wa.me/?text=${text}`, '_blank');
+            showNotification('✓ Partagé sur WhatsApp !');
+            closeShareModal();
+        }
+
+        function shareToTelegram() {
+            const url = encodeURIComponent(window.location.origin + '/' + currentShareImage);
+            const text = encodeURIComponent('Découvrez cette image Minecraft & Chill !');
+            window.open(`https://t.me/share/url?url=${url}&text=${text}`, '_blank');
+            showNotification('✓ Partagé sur Telegram !');
+            closeShareModal();
+        }
+
+        function copyShareLink() {
+            navigator.clipboard.writeText(window.location.origin + '/' + currentShareImage).then(() => {
+                showNotification('✓ Lien de partage copié !');
+                closeShareModal();
+            });
+        }
+
+        // Fonction pour afficher les notifications
+        function showNotification(message) {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // Fermer le modal en cliquant à l'extérieur
+        document.getElementById('shareModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeShareModal();
+            }
+        });
 
         // Initialiser le portfolio au chargement de la page
         document.addEventListener('DOMContentLoaded', generatePortfolio);
