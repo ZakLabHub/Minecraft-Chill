@@ -1,20 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Minecraft & Chill</title>
-
-  <!-- Favicon -->
-  <link rel="icon" type="image/x-icon" href="z1.ico">
-
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;700&display=swap" rel="stylesheet">
-
-  <style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minecraft & Chill</title>
+    <link rel="icon" type="image/x-icon" href="z1.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;700&display=swap" rel="stylesheet">
+    <style>
         @font-face {
             font-family: 'SK Cuber';
             src: url('sk.ttf') format('truetype');
@@ -150,9 +143,24 @@
             opacity: 0;
             transition: opacity 0.3s ease;
             display: flex;
-            align-items: flex-end;
+            flex-direction: column;
             justify-content: space-between;
             padding: 15px;
+        }
+
+        .image-title {
+            color: white;
+            font-weight: bold;
+            font-size: 16px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+            align-self: flex-start;
+            margin-bottom: auto;
+        }
+
+        .overlay-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
         }
 
         .portfolio-item:hover .image-overlay {
@@ -443,18 +451,21 @@
                 item.innerHTML = `
                     <img src="article${i}.png" alt="Article ${i}" loading="lazy" onerror="this.style.display='none'">
                     <div class="image-overlay">
-                        <div class="image-actions">
-                            <button class="action-btn" onclick="copyImage('article${i}.png')" title="Copy">
-                                <i class="fas fa-copy"></i>
-                            </button>
-                            <button class="action-btn" onclick="downloadImage('article${i}.png')" title="Download">
-                                <i class="fas fa-download"></i>
-                            </button>
-                            <button class="action-btn" onclick="shareImage('article${i}.png')" title="Share">
-                                <i class="fas fa-share-alt"></i>
-                            </button>
+                        <div class="image-title">MON TITRE</div>
+                        <div class="overlay-bottom">
+                            <div class="image-actions">
+                                <button class="action-btn" onclick="copyImage('article${i}.png')" title="Copy">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                                <button class="action-btn" onclick="downloadImage('article${i}.png')" title="Download">
+                                    <i class="fas fa-download"></i>
+                                </button>
+                                <button class="action-btn" onclick="shareImage('article${i}.png')" title="Share">
+                                    <i class="fas fa-share-alt"></i>
+                                </button>
+                            </div>
+                            <div class="image-date">__/__/__</div>
                         </div>
-                        <div class="image-date">__/__/__</div>
                     </div>
                 `;
                 
@@ -479,7 +490,7 @@
         // Fonction pour copier l'image
         function copyImage(imageName) {
             navigator.clipboard.writeText('https://zaklabhub.github.io/Minecraft-Chill/').then(() => {
-                showNotification('Copied to clipboard');
+                showNotification('✓ Link copied!');
             }).catch(err => {
                 showNotification('✗ Copy failed');
                 console.error('Copy error:', err);
@@ -544,7 +555,7 @@
 
         function copyShareLink() {
             navigator.clipboard.writeText('https://zaklabhub.github.io/Minecraft-Chill/').then(() => {
-                showNotification('Copied to clipboard');
+                showNotification('✓ Share link copied!');
                 closeShareModal();
             });
         }
