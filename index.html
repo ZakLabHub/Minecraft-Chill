@@ -174,7 +174,7 @@
         }
 
         .action-btn {
-            bground: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.9);
             border: none;
             padding: 8px;
             border-radius: 50%;
@@ -362,27 +362,6 @@
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
         }
-
-        /* Styles pour les différentes tailles d'images */
-        .portfolio-item:nth-child(3n+1) img {
-            min-height: 500px;
-            max-height: 700px;
-        }
-
-        .portfolio-item:nth-child(4n+2) img {
-            min-height: 600px;
-            max-height: 900px;
-        }
-
-        .portfolio-item:nth-child(5n+3) img {
-            min-height: 700px;
-            max-height: 1100px;
-        }
-
-        .portfolio-item:nth-child(7n+4) img {
-            min-height: 500px;
-            max-height: 800px;
-        }
     </style>
 </head>
 <body>
@@ -450,7 +429,7 @@
                 item.className = 'portfolio-item';
                 
                 item.innerHTML = `
-                    <img src="article${i}.png" alt="Portfolio image" loading="lazy" onerror="this.src='https://via.placeholder.com/300x400?text=Image+Not+Found';">
+                    <img src="article${i}.png" alt="" loading="lazy" onerror="this.src='https://via.placeholder.com/300x400?text=Image+Not+Found';">
                     <div class="image-overlay">
                         <div class="image-title">MON TITRE</div>
                         <div class="image-actions">
@@ -570,25 +549,34 @@
             }, 3000);
         }
 
+        // Précharger les premières images pour réduire le temps de chargement
+        function preloadImages() {
+            const imagePromises = [];
+            for (let i = 1; i <= 10; i++) {
+                const img = new Image();
+                img.src = `article${i}.png`;
+                imagePromises.push(new Promise((resolve) => {
+                    img.onload = resolve;
+                    img.onerror = () => {
+                        img.src = 'https://via.placeholder.com/300x400?text=Image+Not+Found';
+                        resolve();
+                    };
+                }));
+            }
+            return Promise.all(imagePromises);
+        }
+
+        // Initialiser le portfolio après préchargement des images
+        document.addEventListener('DOMContentLoaded', async () => {
+            await preloadImages();
+            generatePortfolio();
+        });
+
         // Fermer le modal en cliquant à l'extérieur
         document.getElementById('shareModal').addEventListener('click', function(e) {
             if (e.target === this) {
                 closeShareModal();
             }
-        });
-
-        // Précharger les premières images pour réduire le temps de chargement
-        function preloadImages() {
-            for (let i = 1; i <= 10; i++) {
-                const img = new Image();
-                img.src = `article${i}.png`;
-            }
-        }
-
-        // Initialiser le portfolio et précharger les images au chargement de la page
-        document.addEventListener('DOMContentLoaded', () => {
-            preloadImages();
-            generatePortfolio();
         });
     </script>
 </body>
