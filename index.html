@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Minecraft & Chill</title>
     <link rel="icon" type="image/x-icon" href="z1.ico">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css  ">
     <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;700&display=swap" rel="stylesheet">
     <style>
         @font-face {
@@ -399,10 +400,10 @@
 
     <footer class="footer">
         <i class="fab fa-discord social-icon discord" onclick="window.location.href='discord'"></i>
-        <i class="fab fa-instagram social-icon instagram" onclick="window.open('https://instagram.com/zakmc_1', '_blank')"></i>
-        <i class="fab fa-youtube social-icon youtube" onclick="window.open('https://youtube.com/@ZakMC_1', '_blank')"></i>
-        <i class="fab fa-twitch social-icon twitch" onclick="window.open('https://twitch.tv/zakmc_', '_blank')"></i>
-        <i class="fab fa-pinterest social-icon pinterest" onclick="window.open('https://pinterest.com/Minecraft&Chill', '_blank')"></i>
+        <i class="fab fa-instagram social-icon instagram" onclick="window.open('  https://instagram.com/zakmc_1  ', '_blank')"></i>
+        <i class="fab fa-youtube social-icon youtube" onclick="window.open('https://youtube.com/@ZakMC_1  ', '_blank')"></i>
+        <i class="fab fa-twitch social-icon twitch" onclick="window.open('https://twitch.tv/zakmc_  ', '_blank')"></i>
+        <i class="fab fa-pinterest social-icon pinterest" onclick="window.open('https://pinterest.com/Minecraft&Chill  ', '_blank')"></i>
     </footer>
 
     <!-- Modal de partage -->
@@ -448,7 +449,7 @@
                 item.className = 'portfolio-item';
                 
                 item.innerHTML = `
-                    <img src="article${i}.png" alt="Article ${i}" onerror="this.style.display='none'">
+                    <img src="article${i}.png" alt="Article ${i}">
                     <div class="image-overlay">
                         <div class="image-title">MON TITRE</div>
                         <div class="overlay-bottom">
@@ -488,7 +489,7 @@
 
         // Fonction pour copier l'image
         function copyImage(imageName) {
-            navigator.clipboard.writeText('https://zaklabhub.github.io/Minecraft-Chill/').then(() => {
+            navigator.clipboard.writeText('https://zaklabhub.github.io/Minecraft-Chill/  ').then(() => {
                 showNotification('✓ Link copied!');
             }).catch(err => {
                 showNotification('✗ Copy failed');
@@ -523,14 +524,14 @@
 
         // Fonctions de partage
         function shareToFacebook() {
-            const url = encodeURIComponent('https://zaklabhub.github.io/Minecraft-Chill/');
+            const url = encodeURIComponent('https://zaklabhub.github.io/Minecraft-Chill/  ');
             window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, '_blank');
             showNotification('✓ Shared on Facebook!');
             closeShareModal();
         }
 
         function shareToTwitter() {
-            const url = encodeURIComponent('https://zaklabhub.github.io/Minecraft-Chill/');
+            const url = encodeURIComponent('  https://zaklabhub.github.io/Minecraft-Chill/  ');
             const text = encodeURIComponent('Check out this Minecraft & Chill image!');
             window.open(`https://twitter.com/intent/tweet?url=${url}&text=${text}`, '_blank');
             showNotification('✓ Shared on Twitter!');
@@ -538,14 +539,14 @@
         }
 
         function shareToWhatsApp() {
-            const text = encodeURIComponent(`Check out this Minecraft & Chill image! https://zaklabhub.github.io/Minecraft-Chill/`);
+            const text = encodeURIComponent(`Check out this Minecraft & Chill image!   https://zaklabhub.github.io/Minecraft-Chill/  `);
             window.open(`https://wa.me/?text=${text}`, '_blank');
             showNotification('✓ Shared on WhatsApp!');
             closeShareModal();
         }
 
         function shareToTelegram() {
-            const url = encodeURIComponent('https://zaklabhub.github.io/Minecraft-Chill/');
+            const url = encodeURIComponent('  https://zaklabhub.github.io/Minecraft-Chill/  ');
             const text = encodeURIComponent('Check out this Minecraft & Chill image!');
             window.open(`https://t.me/share/url?url=${url}&text=${text}`, '_blank');
             showNotification('✓ Shared on Telegram!');
@@ -553,7 +554,7 @@
         }
 
         function copyShareLink() {
-            navigator.clipboard.writeText('https://zaklabhub.github.io/Minecraft-Chill/').then(() => {
+            navigator.clipboard.writeText('  https://zaklabhub.github.io/Minecraft-Chill/  ').then(() => {
                 showNotification('✓ Share link copied!');
                 closeShareModal();
             });
@@ -582,3 +583,4 @@
     </script>
 </body>
 </html>
+```
